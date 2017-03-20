@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>ScreenSaver Design Project</title>
+    <style media="screen">
+        body {
+            padding: 0;
+            margin: 0;
+        }
+
+        canvas {
+            /*border: 1px solid #000;*/
+        }
+    </style>
+</head>
+
+<body>
+
+    <canvas id="tutorial" width="600" height="600"></canvas>
+
+    <script>
+        var canvas = document.getElementById("tutorial");
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        var ctx = canvas.getContext("2d");
+
+        var x = 0, //move the element from previous loc in x-dir
+            y = 0, //same here as above but only in y-dir
+            counter = 0, //decides when to stop and shift down in y-dir
+            hue = 0; //changes color of the line
+        var direction = "inc";
+        var request = window.requestAnimationFrame(myfun);
+
+
+        function myfun() {
+
+            //THIS HAPPENS AT THE EXTREME LEFT HAND SIDE
+            if (counter === 0) {
+                direction = "inc";
+                ctx.fillStyle = `hsla(${hue}, 100%, 50%,1)`;
+                if (y === 0) {
+                    ctx.translate(x, 0);
+                    ctx.fillRect(0, 0, 100, 80);
+                } else {
+                    //this checks if y has any value to move the line down
+                    ctx.translate(0, y);
+                    ctx.fillRect(0, 0, 100, 80);
+                }
+                counter += 1;
+                hue++;
+                x = 10; //giving a value to x to override its intial value=0
+                window.requestAnimationFrame(myfun);
+            }
+
+            //THIS HAPPENS WHILE MOVING LEFT TO RIGHT ---->
+            else if (counter < 135 && counter > 0 && direction === "inc") {
+                ctx.fillStyle = `hsla(${hue}, 100%, 50%,1)`;
+                ctx.translate(x, 0);
+                ctx.fillRect(0, 0, 100, 80);
+                counter += 1;
+                hue++;
+                window.requestAnimationFrame(myfun);
+            }
+
+            //THIS HAPPENS AT THE EXTREME RIGHT HAND CORNER
+            else if (counter === 135) {
+                direction = "dec";
+                y = 80;
+                ctx.fillStyle = `hsla(${hue}, 100%, 50%,1)`;
+                ctx.translate(0, y); //dont need to move in x-dir, only in y
+                ctx.fillRect(0, 0, 100, 80);
+                counter -= 1;
+                hue++;
+                x = -10;
+                window.requestAnimationFrame(myfun);
+
+                //THIS HAPPENS WHILE MOVING RIGHT TO LEFT <-----
+            } else if (counter < 135 && counter > 0 && direction === "dec") {
+                ctx.fillStyle = `hsla(${hue}, 100%, 50%,1)`;
+                ctx.translate(x, 0);
+                ctx.fillRect(0, 0, 100, 80);
+                counter -= 1;
+                hue++;
+                y = 80;
+                window.requestAnimationFrame(myfun);
+            }
+        }
+    </script>
+
+</body>
+
+</html>
+</script>
+
+</body>
+
+</html>
